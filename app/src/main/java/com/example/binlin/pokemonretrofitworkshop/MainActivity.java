@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (resultsFragment.isVisible()) {
             getSupportFragmentManager().beginTransaction().remove(resultsFragment).commit();
+            pokemonName.setText("");
         } else {
             super.onBackPressed();
         }

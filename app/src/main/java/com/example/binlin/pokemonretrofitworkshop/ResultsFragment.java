@@ -62,7 +62,6 @@ public class ResultsFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        // TODO finish this part
         String pokemonName = getArguments().getString(POKEMON_NAME);
         builtRetrofit();
         makeApiCallInfo(pokemonName);
@@ -76,36 +75,59 @@ public class ResultsFragment extends Fragment {
                 if (response.isSuccessful()) {
                     pokemonNameTextView.setText(response.body().getName());
                     Glide.with(getView()).load(response.body().getSprite()).into(pokemonImage);
-                    makeApiCallEffect(response.body().getId());
+                    //makeApiCallEffect(response.body().getId());
+                    makeApiCallEffect(response.body().getAbilitiesWhole());
                 } else {
-                    Toast.makeText(getActivity(), "Error While Query for Info, Try Again!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Error While Query for Info, Try Again!", Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<RetrofitPokemonApiCalls.PokemonInfo> call, Throwable t) {
                 t.printStackTrace();
-                Toast.makeText(getActivity(), "Hit onFailure, check API info and network connection", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Hit onFailure while searching info, check API info and network connection", Toast.LENGTH_LONG).show();
             }
         });
     }
 
-    private void makeApiCallEffect(int id) {
-        retrofitPokemonApiCalls.getPokemonEffects(id).enqueue(new Callback<RetrofitPokemonApiCalls.PokemonEffects>() {
-            @Override
-            public void onResponse(Call<RetrofitPokemonApiCalls.PokemonEffects> call, Response<RetrofitPokemonApiCalls.PokemonEffects> response) {
-                if (response.isSuccessful()) {
-                    pokemonEffectTextView.setText(response.body().getEffects());
-                } else {
-                    Toast.makeText(getActivity(), "Error While Query for Effects, Try Again!", Toast.LENGTH_SHORT).show();
-                }
-            }
+//    private void makeApiCallEffect(int id) {
+//        retrofitPokemonApiCalls.getPokemonEffects(id).enqueue(new Callback<RetrofitPokemonApiCalls.PokemonEffects>() {
+//            @Override
+//            public void onResponse(Call<RetrofitPokemonApiCalls.PokemonEffects> call, Response<RetrofitPokemonApiCalls.PokemonEffects> response) {
+//                if (response.isSuccessful()) {
+//                    pokemonEffectTextView.setText(response.body().getEffects());
+//                } else {
+//                    Toast.makeText(getActivity(), "Error While Query for Effects, Try Again!", Toast.LENGTH_LONG).show();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<RetrofitPokemonApiCalls.PokemonEffects> call, Throwable t) {
+//                t.printStackTrace();
+//                Toast.makeText(getActivity(), "Hit onFailure, check API info and network connection", Toast.LENGTH_LONG).show();
+//            }
+//        });
+//    }
 
-            @Override
-            public void onFailure(Call<RetrofitPokemonApiCalls.PokemonEffects> call, Throwable t) {
-                t.printStackTrace();
-                Toast.makeText(getActivity(), "Hit onFailure, check API info and network connection", Toast.LENGTH_SHORT).show();
-            }
-        });
+    private void makeApiCallEffect(String[] abilities) {
+        for (int i = 0; i <= abilities.length - 1; i++) {
+            retrofitPokemonApiCalls.getPokemonEffects(abilities[i]).enqueue(new Callback<RetrofitPokemonApiCalls.PokemonEffects>() {
+                @Override
+                public void onResponse(Call<RetrofitPokemonApiCalls.PokemonEffects> call, Response<RetrofitPokemonApiCalls.PokemonEffects> response) {
+                    if (response.isSuccessful()) {
+                        pokemonEffectTextView.append(response.body().getEffects());
+                        pokemonEffectTextView.append("\n\n");
+                    } else {
+                        Toast.makeText(getActivity(), "Error While Query for Effects, Try Again!", Toast.LENGTH_LONG).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<RetrofitPokemonApiCalls.PokemonEffects> call, Throwable t) {
+                    t.printStackTrace();
+                    Toast.makeText(getActivity(), "Hit onFailure while searching for effects, check API info and network connection", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
     }
 }
