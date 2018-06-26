@@ -26,10 +26,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.capture_button)
-    protected void captureClicked(){
-        if(pokemonName.getText().toString().isEmpty()){
+    protected void captureClicked() {
+        if (pokemonName.getText().toString().isEmpty()) {
             Toast.makeText(this, "Please fill out the pokemon's name", Toast.LENGTH_LONG).show();
-        }else{
+        } else {
             resultsFragment = ResultsFragment.newInstance();
             Bundle bundle = new Bundle();
             bundle.putString(POKEMON_NAME, pokemonName.getText().toString());
@@ -41,9 +41,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(resultsFragment.isVisible()){
+        if (resultsFragment.isVisible()) {
             getSupportFragmentManager().beginTransaction().remove(resultsFragment).commit();
-        }else{
+        } else {
             super.onBackPressed();
         }
     }

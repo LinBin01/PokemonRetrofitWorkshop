@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
@@ -23,7 +25,7 @@ import static com.example.binlin.pokemonretrofitworkshop.MainActivity.POKEMON_NA
 
 public class ResultsFragment extends Fragment {
 
-    private String baseURL = "http://pokeapi.co/api/v2/";
+    private String baseURL = "https://pokeapi.co/api/v2/";
     private Retrofit retrofit;
     private RetrofitPokemonApiCalls retrofitPokemonApiCalls;
 
@@ -33,8 +35,6 @@ public class ResultsFragment extends Fragment {
     protected ImageView pokemonImage;
     @BindView(R.id.pokemon_effect_textView)
     protected TextView pokemonEffectTextView;
-
-    protected int id = -1;
 
 
     @Nullable
@@ -66,23 +66,18 @@ public class ResultsFragment extends Fragment {
         String pokemonName = getArguments().getString(POKEMON_NAME);
         builtRetrofit();
         makeApiCallInfo(pokemonName);
-        if(id == -1){
-            Toast.makeText(getActivity(), "No proper ID", Toast.LENGTH_LONG).show();
-        }else{
-            makeApiCallEffect(this.id);
-        }
 
     }
 
-    private void makeApiCallInfo(String pokemonName){
+    private void makeApiCallInfo(String pokemonName) {
         retrofitPokemonApiCalls.getPokemonInfo(pokemonName).enqueue(new Callback<RetrofitPokemonApiCalls.PokemonInfo>() {
             @Override
             public void onResponse(Call<RetrofitPokemonApiCalls.PokemonInfo> call, Response<RetrofitPokemonApiCalls.PokemonInfo> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     pokemonNameTextView.setText(response.body().getName());
-                    pokemonImage.setImageDrawable(response.body().getSprite());
-                    id = response.body().getId();
-                }else{
+                    Glide.with(getView()).load(response.body().getSprite()).into(pokemonImage);
+                    makeApiCallEffect(response.body().getId());
+                } else {
                     Toast.makeText(getActivity(), "Error While Query for Info, Try Again!", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -95,13 +90,13 @@ public class ResultsFragment extends Fragment {
         });
     }
 
-    private void makeApiCallEffect(int id){
+    private void makeApiCallEffect(int id) {
         retrofitPokemonApiCalls.getPokemonEffects(id).enqueue(new Callback<RetrofitPokemonApiCalls.PokemonEffects>() {
             @Override
             public void onResponse(Call<RetrofitPokemonApiCalls.PokemonEffects> call, Response<RetrofitPokemonApiCalls.PokemonEffects> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     pokemonEffectTextView.setText(response.body().getEffects());
-                }else{
+                } else {
                     Toast.makeText(getActivity(), "Error While Query for Effects, Try Again!", Toast.LENGTH_SHORT).show();
                 }
             }

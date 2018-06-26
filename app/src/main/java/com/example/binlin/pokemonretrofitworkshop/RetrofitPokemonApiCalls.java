@@ -1,9 +1,9 @@
 package com.example.binlin.pokemonretrofitworkshop;
 
-import android.graphics.drawable.Drawable;
-import android.widget.ImageView;
 
 import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -14,7 +14,7 @@ public interface RetrofitPokemonApiCalls {
     @GET("pokemon/{name}")
     Call<PokemonInfo> getPokemonInfo(@Path("name") String name);
 
-    @GET("pokemon/{id}")
+    @GET("ability/{id}")
     Call<PokemonEffects> getPokemonEffects(@Path("id") int id);
 
     class PokemonInfo {
@@ -24,26 +24,48 @@ public interface RetrofitPokemonApiCalls {
         @SerializedName("id")
         private int id;
 
-        @SerializedName("sprite")
-        private ImageView sprite;
+        @SerializedName("sprites")
+        private PokemonSprites sprites;
 
-        public  String getName() {
+        public String getName() {
             return name;
         }
-        public  int getId() {
+
+        public int getId() {
             return id;
         }
-        public Drawable getSprite() {
-            return sprite.getDrawable();
+
+        public String getSprite() {
+            return sprites.getImageUrl();
+        }
+
+        class PokemonSprites {
+
+            @SerializedName("front_default")
+            private String imageUrl;
+
+            public String getImageUrl() {
+                return imageUrl;
+            }
+
         }
     }
 
     class PokemonEffects {
-        @SerializedName("effects")
-        private String effects;
+        @SerializedName("effect_entries")
+        private List<PokemonEffectsEntries> effectsList;
 
         public String getEffects() {
-            return effects;
+            return effectsList.get(0).getEffect();
+        }
+
+        class PokemonEffectsEntries {
+            @SerializedName("effect")
+            private String effect;
+
+            public String getEffect() {
+                return effect;
+            }
         }
     }
 }
