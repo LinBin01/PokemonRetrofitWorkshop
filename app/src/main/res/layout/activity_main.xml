@@ -27,6 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="Enter a Pokemon"
+            android:singleLine="true"
             android:textColor="@android:color/black"
             android:textSize="24sp" />
     </android.support.design.widget.TextInputLayout>

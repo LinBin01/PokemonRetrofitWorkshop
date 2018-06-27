@@ -87,8 +87,15 @@ public interface RetrofitPokemonApiCalls {
         @SerializedName("effect_entries")
         private List<PokemonEffectsEntries> effectsList;
 
+        @SerializedName("name")
+        private String effectName;
+
         public String getEffects() {
             return effectsList.get(0).getEffect();
+        }
+
+        public String getEffectName() {
+            return effectName;
         }
 
         class PokemonEffectsEntries {

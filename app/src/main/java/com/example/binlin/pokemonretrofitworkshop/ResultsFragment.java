@@ -110,11 +110,13 @@ public class ResultsFragment extends Fragment {
 //    }
 
     private void makeApiCallEffect(String[] abilities) {
-        for (int i = 0; i <= abilities.length - 1; i++) {
+        for (int i = abilities.length - 1; i >= 0; i--) {
             retrofitPokemonApiCalls.getPokemonEffects(abilities[i]).enqueue(new Callback<RetrofitPokemonApiCalls.PokemonEffects>() {
                 @Override
                 public void onResponse(Call<RetrofitPokemonApiCalls.PokemonEffects> call, Response<RetrofitPokemonApiCalls.PokemonEffects> response) {
                     if (response.isSuccessful()) {
+                        pokemonEffectTextView.append(response.body().getEffectName());
+                        pokemonEffectTextView.append(":\n");
                         pokemonEffectTextView.append(response.body().getEffects());
                         pokemonEffectTextView.append("\n\n");
                     } else {
