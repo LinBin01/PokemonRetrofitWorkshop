@@ -14,8 +14,6 @@ public interface RetrofitPokemonApiCalls {
     @GET("pokemon/{name}")
     Call<PokemonInfo> getPokemonInfo(@Path("name") String name);
 
-//    @GET("ability/{id}")
-//    Call<PokemonEffects> getPokemonEffects(@Path("id") int id);
 
     @GET("ability/{abilityName}")
     Call<PokemonEffects> getPokemonEffects(@Path("abilityName") String abilityName);
@@ -24,8 +22,6 @@ public interface RetrofitPokemonApiCalls {
         @SerializedName("name")
         private String name;
 
-//        @SerializedName("id")
-//        private int id;
 
         @SerializedName("abilities")
         private List<PokemonAbilities> abilitiesList;
@@ -37,9 +33,6 @@ public interface RetrofitPokemonApiCalls {
             return name;
         }
 
-//        public int getId() {
-//            return id;
-//        }
 
         public String getSprite() {
             return sprites.getImageUrl();

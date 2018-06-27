@@ -28,11 +28,11 @@ public class MainActivity extends AppCompatActivity {
     @OnClick(R.id.capture_button)
     protected void captureClicked() {
         if (pokemonName.getText().toString().isEmpty()) {
-            Toast.makeText(this, "Please fill out the pokemon's name", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Please fill out the pokemon's name", Toast.LENGTH_SHORT).show();
         } else {
             resultsFragment = ResultsFragment.newInstance();
             Bundle bundle = new Bundle();
-            bundle.putString(POKEMON_NAME, pokemonName.getText().toString());
+            bundle.putString(POKEMON_NAME, pokemonName.getText().toString().toLowerCase());
             resultsFragment.setArguments(bundle);
 
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_holder, resultsFragment).commit();
